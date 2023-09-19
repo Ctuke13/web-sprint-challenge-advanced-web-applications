@@ -112,12 +112,14 @@ export default function App() {
         Authorization: token,
       },
     };
+    setSpinnerOn(true);
     axios
       .post(articlesUrl, article, config)
       .then((res) => {
         console.log(res);
         setArticles([...articles, res.data.article]);
         setMessage(res.data.message);
+        setSpinnerOn(false);
       })
       .catch((err) => console.log(err));
   };
@@ -125,6 +127,7 @@ export default function App() {
   const updateArticle = ({ article_id, article }) => {
     // ✨ implement
     // You got this!
+    setSpinnerOn(true);
     axiosWithAuth()
       .put(articlesUrl + `/${article_id}`, article)
       .then((res) => {
@@ -139,6 +142,7 @@ export default function App() {
     // ✨ implement
     setMessage("");
     console.log(article_id);
+    setSpinnerOn(true);
     axiosWithAuth()
       .delete(articlesUrl + `/${article_id}`)
       .then((res) => {
