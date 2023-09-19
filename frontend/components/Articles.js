@@ -10,7 +10,6 @@ export default function Articles(props) {
     deleteArticle,
     updateArticle,
     setCurrentArticleId,
-    currentArticleId,
   } = props;
   // ✨ implement conditional logic: if no token exists
   // we should render a Navigate to login screen (React Router v.6)
@@ -22,6 +21,10 @@ export default function Articles(props) {
   // if (!token) {
   //   navigate("/");
   // }
+
+  // const currentArticleId = articles.find(
+  //   (article) => article.article_id === currentArticleId
+  // )
 
   useEffect(() => {
     // ✨ grab the articles here, on first render only

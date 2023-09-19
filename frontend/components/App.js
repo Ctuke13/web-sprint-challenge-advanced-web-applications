@@ -7,6 +7,7 @@ import ArticleForm from "./ArticleForm";
 import Spinner from "./Spinner";
 import { axiosWithAuth } from "../axios";
 import axios from "axios";
+import PrivateRoute from "./PrivateRoute";
 
 const articlesUrl = "http://localhost:9000/api/articles";
 const loginUrl = "http://localhost:9000/api/login";
@@ -110,6 +111,7 @@ export default function App() {
       .then((res) => {
         console.log(res);
         setArticles([...articles, res.data.article]);
+        setMessage(res.data.message);
       })
       .catch((err) => console.log(err));
   };
@@ -144,6 +146,29 @@ export default function App() {
       });
   };
 
+  function ArticleWrapper() {
+    return (
+      <div>
+        <ArticleForm
+          postArticle={postArticle}
+          updateArticle={updateArticle}
+          setCurrentArticleId={setCurrentArticleId}
+          articles={articles}
+          currentArticleId={currentArticleId}
+          getArticles={getArticles}
+        />
+        <Articles
+          articles={articles}
+          getArticles={getArticles}
+          deleteArticle={deleteArticle}
+          updateArticle={updateArticle}
+          setCurrentArticleId={setCurrentArticleId}
+          currentArticleId={currentArticleId}
+        />
+      </div>
+    );
+  }
+
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
     <>
@@ -165,28 +190,19 @@ export default function App() {
           </NavLink>
         </nav>
         <Routes>
-          <Route path="/" element={<LoginForm login={login} />} />
           <Route
-            path="articles"
+            exact
+            path="/"
             element={
-              <>
-                <ArticleForm
-                  postArticle={postArticle}
-                  updateArticle={updateArticle}
-                  setCurrentArticleId={setCurrentArticleId}
-                  currentArticle={articles.find(
-                    (article) => article.article_id === currentArticleId
-                  )}
-                />
-                <Articles
-                  articles={articles}
-                  getArticles={getArticles}
-                  deleteArticle={deleteArticle}
-                  updateArticle={updateArticle}
-                  setCurrentArticleId={setCurrentArticleId}
-                  currentArticleId={currentArticleId}
-                />
-              </>
+              <LoginForm login={login} currentArticleId={currentArticleId} />
+            }
+          />
+          <Route
+            path="/articles"
+            element={
+              <PrivateRoute>
+                <ArticleWrapper />
+              </PrivateRoute>
             }
           />
         </Routes>
