@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { NavLink, Routes, Route, useNavigate } from "react-router-dom";
+import {
+  NavLink,
+  Routes,
+  Route,
+  useNavigate,
+  BrowserRouter,
+} from "react-router-dom";
 import Articles from "./Articles";
 import LoginForm from "./LoginForm";
 import Message from "./Message";
@@ -37,7 +43,7 @@ export default function App() {
     // and a message saying "Goodbye!" should be set in its proper state.
     // In any case, we should redirect the browser back to the login screen,
     // using the helper above.
-    localStorage.removeItem("token");
+    localStorage.clear("token");
     setMessage("Goodbye!");
     redirectToLogin();
   };
@@ -49,7 +55,7 @@ export default function App() {
     // On success, we should set the token to local storage in a 'token' key,
     // put the server success message in its proper state, and redirect
     // to the Articles screen. Don't forget to turn off the spinner!
-    setMessage("");
+    setMessage;
     setSpinnerOn(true);
     axios
       .post(loginUrl, { username, password })
@@ -57,8 +63,8 @@ export default function App() {
         console.log(res.data);
         localStorage.setItem("token", res.data.token);
         setMessage(res.data.message);
-        setSpinnerOn(false);
         redirectToArticles();
+        setSpinnerOn(false);
       })
       .catch((err) => {
         console.log(err);
@@ -146,28 +152,11 @@ export default function App() {
       });
   };
 
-  function ArticleWrapper() {
-    return (
-      <div>
-        <ArticleForm
-          postArticle={postArticle}
-          updateArticle={updateArticle}
-          setCurrentArticleId={setCurrentArticleId}
-          articles={articles}
-          currentArticleId={currentArticleId}
-          getArticles={getArticles}
-        />
-        <Articles
-          articles={articles}
-          getArticles={getArticles}
-          deleteArticle={deleteArticle}
-          updateArticle={updateArticle}
-          setCurrentArticleId={setCurrentArticleId}
-          currentArticleId={currentArticleId}
-        />
-      </div>
-    );
-  }
+  // function ArticleWrapper() {
+  //   return (
+
+  //   );
+  // }
 
   return (
     // ✨ fix the JSX: `Spinner`, `Message`, `LoginForm`, `ArticleForm` and `Articles` expect props ❗
@@ -190,21 +179,31 @@ export default function App() {
           </NavLink>
         </nav>
         <Routes>
-          <Route
-            exact
-            path="/"
-            element={
-              <LoginForm login={login} currentArticleId={currentArticleId} />
-            }
-          />
+          <Route path="/" element={<LoginForm login={login} />} />
           <Route
             path="/articles"
             element={
-              <PrivateRoute>
-                <ArticleWrapper />
-              </PrivateRoute>
+              <div>
+                <ArticleForm
+                  postArticle={postArticle}
+                  updateArticle={updateArticle}
+                  setCurrentArticleId={setCurrentArticleId}
+                  articles={articles}
+                  currentArticleId={currentArticleId}
+                  getArticles={getArticles}
+                />
+                <Articles
+                  articles={articles}
+                  getArticles={getArticles}
+                  deleteArticle={deleteArticle}
+                  updateArticle={updateArticle}
+                  setCurrentArticleId={setCurrentArticleId}
+                  currentArticleId={currentArticleId}
+                />
+              </div>
             }
           />
+          {/* <Route index element={ArticleWrapper} /> */}
         </Routes>
         <footer>Bloom Institute of Technology 2022</footer>
       </div>

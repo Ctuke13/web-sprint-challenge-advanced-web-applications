@@ -13,7 +13,6 @@ export default function ArticleForm(props) {
     setCurrentArticleId,
     articles,
     currentArticleId,
-    getArticles,
   } = props;
 
   const currentArticle = articles.find(

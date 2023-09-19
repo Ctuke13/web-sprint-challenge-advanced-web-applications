@@ -33,8 +33,6 @@ export default function LoginForm(props) {
     return username.trim().length >= 3 && password.length >= 8 ? false : true;
   };
 
-  console.log(values);
-
   return (
     <form id="loginForm" onSubmit={onSubmit}>
       <h2>Login</h2>

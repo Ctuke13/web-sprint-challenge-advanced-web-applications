@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import PT from "prop-types";
 
 export default function Articles(props) {
@@ -26,9 +26,16 @@ export default function Articles(props) {
   //   (article) => article.article_id === currentArticleId
   // )
 
+  const navigate = useNavigate();
+  const token = localStorage.getItem("token");
+
   useEffect(() => {
     // ✨ grab the articles here, on first render only
-    getArticles();
+    if (!token) {
+      return navigate("/");
+    } else {
+      return getArticles();
+    }
   }, []);
 
   return (
